@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">WeatherApplication</string>
+    <string name="settings_arrow_left">arrow left</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_unit">Units</string>
+    <string name="settings_wind">Wind</string>
+    <string name="settings_weather">Weather</string>
+    <string name="settings_apps">Apps</string>
+    <string name="settings_about_weather_app">About Weather App</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_share">Share</string>
+    <string name="no_data">NO DATA</string>
+    <string name="temp">Temporary Text</string>
+    <string name="temp_update">Updated: WeTextd, July, 13 2023 11:33AM</string>
+    <string name="search">Search Location</string>
+
+</resources>

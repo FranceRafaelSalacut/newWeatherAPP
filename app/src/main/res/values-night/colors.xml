@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="primary">#010712</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="secondary">#104AB9</color>
+    <color name="onSecondary">#ACAFCA</color>
+    <color name="tertiary">#FFC31B</color>
+    <color name="custom1">#F7F250</color>
+    <color name="surface">#010712</color>
+    <color name="onSurface">#5F70FF</color>
+    <color name="buttonDark">#010712</color>
+    <color name="buttonLight">#05193F</color>
+    <color name="location_icon">#5F70FF</color>
+    <color name="default_text_color">#5F70FF</color>
+    <color name="rounded_corners_color">#010712</color><!--#172C51-->
+</resources>
