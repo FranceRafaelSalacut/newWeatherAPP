@@ -14,10 +14,10 @@ class SearchModel_Impl: SearchModel {
         TODO("SOMETHING")
     }
 
-    override fun loadSearchData(listener: BaseModel.Listener) {
+    override fun loadSearchData(listener: BaseModel.Listener, query: String) {
         val result = ApiServices.search_location(
             apiKey = Constant.apiKey,
-            location = "Manila",
+            location = query,
         )
 
         Log.d("this", result.request().url().toString())

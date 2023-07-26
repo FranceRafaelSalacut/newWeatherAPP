@@ -5,8 +5,11 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -31,9 +34,12 @@ class SearchView : AppCompatActivity(), SearchContract.View{
     private lateinit var switpeRefresh: SwipeRefreshLayout
     private lateinit var location_result: RecyclerView
     private lateinit var searchView: SearchView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var no_data: TextView
 
     //temporary data of Array<String> later to be change into Array<Created_Model>
     /*val locations = __init__()*/
+    private lateinit var locations: List<SearchData.location>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +52,11 @@ class SearchView : AppCompatActivity(), SearchContract.View{
         switpeRefresh = binding.SwioRefresh
         location_result = binding.searchResults
         searchView = binding.searchView
+        progressBar = binding.progressBar
+        no_data = binding.noData
 
         setPresenter(SearchPresenter(this, DependencyInjectorImpl()))
-        presenter.onViewCreated()
+        /*presenter.onViewCreated()*/
 
         //setting up searchViewListener
         searchViewListener()
@@ -64,10 +72,12 @@ class SearchView : AppCompatActivity(), SearchContract.View{
 
     override fun Make_recycler(locations: List<SearchData.location>?) {
         Log.d("this", locations.toString())
+        this.locations = locations!!
+        recycleViewBuilder()
     }
 
     //a function that initializes the recycler view
-    fun recycleViewBuilder(locations: ArrayList<String>){
+    fun recycleViewBuilder(){
         Log.d("this","then last im here")
         //making an instance of the custom adapter then assigning it to the recyclerView reference
         val adapter = CustomAdapter(locations)
@@ -79,6 +89,11 @@ class SearchView : AppCompatActivity(), SearchContract.View{
         //asinging the layout manager for the recyclerView reference
         location_result.layoutManager = GridLayoutManager(this, col)
 
+        if(locations.size > 0){
+            showdata()
+        }else{
+            nodata()
+        }
         //calling function to set up onload and onrefresh Animation.
         setAnimation()
     }
@@ -95,31 +110,31 @@ class SearchView : AppCompatActivity(), SearchContract.View{
 
             //calls everytime the
             override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("Not yet implemented")
+                Log.d("this", "text was submitted")
+                Log.d("this", "query = $query")
+                loading()
+                presenter.onViewCreated(query!!)
+                return false
             }
         })
     }
 
-    /*fun filter(text: String){
+    fun filter(text: String){
         //temporary variable
-        val  temp = mutableListOf<String>()
+        val  temp = mutableListOf<SearchData.location>()
 
         //looping through every item inside locations arraylist
-        for(loc in locations){
-            //did this in one line for now. will make readable later.
-            //sets the current item to lowercase
-            //sets the query text to lowercase -- Locale.getDefault gets the locale of the device
-            //after everything it will test if current item has the query text
-            //then add to temporary variable
+        for(data in locations){
+            val loc = data.name
             if(loc.lowercase().contains(text.lowercase(Locale.getDefault()))){
-                temp.add(loc)
+                temp.add(data)
             }
         }
 
         //swapping recycler view adaptors
         //did this in one line for now. will make readable later. (1)
-        location_result.swapAdapter(CustomAdapter(temp as ArrayList<String>), false)
-    }*/
+        location_result.swapAdapter(CustomAdapter(temp), false)
+    }
 
     fun setAnimation(){
         //getting the reference of an animation resource
@@ -142,8 +157,8 @@ class SearchView : AppCompatActivity(), SearchContract.View{
     }
 
     //function that returns an arraylist of temp strings.
-    fun __init__():ArrayList<String>{
-        return arrayListOf(
+    fun __init__():List<SearchData.location>{
+        val names = arrayListOf(
             "Cebu",
             "Cebu cityy",
             "Wahington, that place, United States of America, This place. Yes that place",
@@ -168,6 +183,40 @@ class SearchView : AppCompatActivity(), SearchContract.View{
             "Lilith",
             "Shima"
         )
+
+        val data = mutableListOf<SearchData.location>()
+
+        for(name in names){
+            data.add(
+                SearchData.location(
+                    id = 0,
+                    name = name,
+                    region = "unkown",
+                    country = "unkown",
+                    lat = 0.0,
+                    lon = 0.0,
+                    url = "unkown"
+                ))
+        }
+        return data
+    }
+
+    fun loading(){
+        progressBar.visibility = View.VISIBLE
+        switpeRefresh.visibility = View.GONE
+        no_data.visibility = View.GONE
+    }
+
+    fun showdata(){
+        progressBar.visibility = View.GONE
+        switpeRefresh.visibility = View.VISIBLE
+        no_data.visibility = View.GONE
+    }
+
+    fun nodata(){
+        progressBar.visibility = View.GONE
+        switpeRefresh.visibility = View.GONE
+        no_data.visibility = View.VISIBLE
     }
 
 }

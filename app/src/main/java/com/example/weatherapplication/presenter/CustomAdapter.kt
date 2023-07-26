@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapplication.R
 import com.example.weatherapplication.databinding.SearchOptionBinding
+import com.example.weatherapplication.model.SearchData
 import com.example.weatherapplication.view.SearchView
 
-class CustomAdapter(private val dataSet: ArrayList<String>) :
+class CustomAdapter(private val dataSet: List<SearchData.location>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -18,8 +19,8 @@ class CustomAdapter(private val dataSet: ArrayList<String>) :
      * (custom ViewHolder)
      */
     class ViewHolder(private val itemBinding: SearchOptionBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(data: String){
-            itemBinding.locationText.text = data
+        fun bind(data: SearchData.location){
+            itemBinding.locationText.text = "${data.name}, ${data.country}, ${data.region}"
             itemBinding.root.animation = AnimationUtils.loadAnimation(itemBinding.root.context, R.anim.scrolldown_anim)
         }
     }

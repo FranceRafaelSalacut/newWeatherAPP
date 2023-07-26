@@ -15,9 +15,9 @@ class SearchPresenter( view: SearchContract.View, dependencyInjector: Dependency
         this.view = null
     }
 
-    override fun onViewCreated() {
+    override fun onViewCreated(query: String) {
         Log.d("this", "was here first")
-        searchModel.loadSearchData(this)
+        searchModel.loadSearchData(this, query)
     }
 
     override fun onRefreshWeather() {
